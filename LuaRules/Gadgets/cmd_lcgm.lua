@@ -16,7 +16,6 @@ if (not gadgetHandler:IsSyncedCode()) then
 end
 
 -- Localisations
-local DelayCall 			= GG.Delay.DelayCall
 -- MoveCtrl
 local mcDisable				= Spring.MoveCtrl.Disable
 local mcEnable				= Spring.MoveCtrl.Enable
@@ -42,8 +41,8 @@ local MIN_DEPTH = -150 -- lowest depth that we allow the command for
 local ACTUAL_MIN_DEPTH = -11 -- lowest depth that the model should be lowered to
 local SINK_RATE = -0.1
 local SINK_TIME = math.floor(ACTUAL_MIN_DEPTH / SINK_RATE)
-local ARMOUR_MULTIPLE = 0.50
-local ACCURACY_MULT = 0.50
+local ARMOUR_MULTIPLE = 1.0
+local ACCURACY_MULT = 0.5
 local BASE_ACCURACY = WeaponDefs[ UnitDefNames["gbrlcgm"].weapons[1].weaponDef ].accuracy -- ;_;
 
 -- Variables
@@ -60,37 +59,56 @@ local beachDesc= {
 }
 
 local function EndBeach(unitID, disable)
-	CallCOBScript(unitID, "StopMoving", 0)
+	env = Spring.UnitScript.GetScriptEnv(unitID)
+	if env.script.StopMoving then
+		Spring.UnitScript.CallAsUnit(unitID, env.script.StopMoving)
+	end
+	--CallCOBScript(unitID, "StopMoving", 0)
 	mcSetVelocity(unitID, 0, 0, 0)
 	activeUnits[unitID] = nil
-	if disable then -- unit has surfaced
-		mcDisable(unitID) 
+	if disable then
 		SetUnitArmored(unitID, false)
-		SetUnitWeaponState(unitID, 1, {accuracy = BASE_ACCURACY})
-		SetUnitWeaponState(unitID, 2, {accuracy = BASE_ACCURACY})
-	else -- unit is grounded
-		SetUnitArmored(unitID, true, ARMOUR_MULTIPLE) 
-		SetUnitWeaponState(unitID, 1, {accuracy = BASE_ACCURACY * ACCURACY_MULT})
-		SetUnitWeaponState(unitID, 2, {accuracy = BASE_ACCURACY * ACCURACY_MULT})
+		mcDisable(unitID) 
+	else
+		SetUnitArmored(unitID, true, ARMOUR_MULTIPLE)
+	end
+
+	local children = GG.boatMothers[unitID] or {}
+	for i, childID in ipairs(children) do
+		if disable then -- unit has surfaced
+			SetUnitWeaponState(childID, 1, {accuracy = BASE_ACCURACY})
+			SetUnitWeaponState(childID, 2, {accuracy = BASE_ACCURACY})
+		else -- unit is grounded
+			SetUnitWeaponState(childID, 1, {accuracy = BASE_ACCURACY * ACCURACY_MULT})
+			SetUnitWeaponState(childID, 2, {accuracy = BASE_ACCURACY * ACCURACY_MULT})
+		end
 	end
 end
 
 local function Beach(unitID, groundHeight)
-	CallCOBScript(unitID, "EmitWakes", 0)
+	env = Spring.UnitScript.GetScriptEnv(unitID)
+	if env.script.StartMoving then
+		Spring.UnitScript.CallAsUnit(unitID, env.script.StartMoving)
+	end
+	--CallCOBScript(unitID, "EmitWakes", 0)
 	mcEnable(unitID)
 	mcSetVelocity(unitID, 0, SINK_RATE, 0)
 	if groundHeight >= ACTUAL_MIN_DEPTH then
 		mcSetTrackGround(unitID, true)
 		mcSetCollideStop(unitID, true)
 	else
-		DelayCall(EndBeach, {unitID, false}, SINK_TIME)
+		GG.Delay.DelayCall(EndBeach, {unitID, false}, SINK_TIME)
 	end
 end
 
 local function UnBeach(unitID)
-	CallCOBScript(unitID, "EmitWakes", 0)
+	env = Spring.UnitScript.GetScriptEnv(unitID)
+	if env.script.StartMoving then
+		Spring.UnitScript.CallAsUnit(unitID, env.script.StartMoving)
+	end
+	--CallCOBScript(unitID, "EmitWakes", 0)
 	mcSetVelocity(unitID, 0, -SINK_RATE, 0)
-	DelayCall(EndBeach, {unitID, true}, SINK_TIME)
+	GG.Delay.DelayCall(EndBeach, {unitID, true}, SINK_TIME)
 end
 
 function gadget:UnitCreated(unitID, unitDefID, teamID)

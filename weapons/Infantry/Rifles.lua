@@ -6,6 +6,7 @@ local RifleClass = Weapon:New{
   areaOfEffect       = 1,
   avoidFeature       = true,
   avoidFriendly      = false,
+  burnblow           = false,
   collideFeature     = true,
   collideFriendly    = false,
   collisionSize      = 2.5,
@@ -85,13 +86,6 @@ local MosinNagant = RifleClass:New{
   reloadtime         = 3,
   rgbColor           = [[0.0 0.7 0.0]], -- overwrites default
   soundStart         = [[RUS_MosinNagant]],
-}
-
--- Mosin Nagant for puny partisan
--- derives from the above MosinNagant
-local PartisanMosinNagant = MosinNagant:New{
-  accuracy           = 225,
-  movingAccuracy     = 1800,
 }
 
 -- SVT (USSR)
@@ -206,7 +200,6 @@ return lowerkeys({
   M1Garand = M1Garand,
   BAR = BAR,
   MosinNagant = MosinNagant,
-  PartisanMosinNagant = PartisanMosinNagant,
   Mod91 = Mod91,
   Mod91_41 = Mod91_41,
   Arisaka99 = Arisaka99,

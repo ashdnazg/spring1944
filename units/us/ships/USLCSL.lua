@@ -1,4 +1,4 @@
-local US_LCSL = BoatMother:New{
+local US_LCSL = ArmedBoat:New{
 	name					= "LCS(L) Mk. 3",
 	description				= "Landing Craft Support (Large)",
 	acceleration			= 0.075,
@@ -14,7 +14,6 @@ local US_LCSL = BoatMother:New{
 	maxVelocity				= 1.8,
 	movementClass			= "BOAT_LandingCraft",
 	objectName				= "USLCSL.s3o",
-	soundCategory			= "USBoat",
 	transportCapacity		= 7, -- 7 x 1fpu turrets
 	turnRate				= 140,	
 	weapons = {	
@@ -24,6 +23,7 @@ local US_LCSL = BoatMother:New{
 		},
 	},
 	customparams = {
+		soundcategory = "US/Boat",
 		children = {
 			"US_SC_Turret_76mm",
 			"US_LCSL_Turret_TwinBofors_Front",
@@ -40,7 +40,7 @@ local US_LCSL = BoatMother:New{
 }
 
 
-local US_LCSL_Turret_TwinBofors_Front = BoatChild:New{
+local US_LCSL_Turret_TwinBofors_Front = OpenBoatTurret:New{
 	name					= "40mm Twin Bofors Turret",
 	description				= "Primary Turret",
 	objectName				= "USLCSL_Turret_TwinBofors.s3o",
@@ -76,8 +76,9 @@ local US_LCSL_Turret_TwinBofors_Front = BoatChild:New{
 	},
 	customparams = {
 	    maxammo					= 16, -- TODO: from RUSBMO 37mm
-		weaponcost				= 3,
+		weaponcost				= 8,
 		weaponswithammo			= 4,
+
 		barrelrecoildist		= 4,
 		barrelrecoilspeed		= 20,
 		turretturnspeed			= 30,
@@ -106,20 +107,22 @@ local US_LCSL_Turret_TwinBofors_Rear = US_LCSL_Turret_TwinBofors_Front:New{
 	},
 }
 
-local US_SC_Turret_76mm = BoatChild:New{
+local US_SC_Turret_76mm = OpenBoatTurret:New{
 	name					= "3in Mk 50 Turret",
 	description				= "Primary Turret",
 	objectName				= "USSC_Turret_76mm.s3o",
   	weapons = {	
 		[1] = {
+			maxAngleDif			= 270,
 			name				= "mk223in50",
 			onlyTargetCategory	= "BUILDING INFANTRY SOFTVEH OPENVEH HARDVEH SHIP LARGESHIP DEPLOYED",
 		},
 	},
 	customparams = {
-		maxammo					= 26,
-		weaponcost				= 8,
+		maxammo					= 18,
+		weaponcost				= 12,
 		weaponswithammo			= 1,
+
 		barrelrecoildist		= 7,
 		barrelrecoilspeed		= 10,
 		turretturnspeed			= 15,

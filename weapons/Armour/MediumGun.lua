@@ -56,6 +56,7 @@ local MediumGunAPClass = Weapon:New{
 -- HEAT Round Class
 local MediumGunHEATClass = Weapon:New{
   edgeEffectiveness  = 0.2,
+  impactonly         = true,
   explosionGenerator = [[custom:EP_medium]],
   explosionSpeed     = 30, -- needed?
   name               = [[HEAT Shell]],
@@ -356,6 +357,16 @@ local Ansaldo75mmL34AP = Ansaldo75mmL34:New(MediumGunAPClass, true):New{
     default            = 2280,
   },
 }
+local Ansaldo75mmL34HEAT = Ansaldo75mmL34:New(MediumGunHEATClass, true):New{
+  range              = 825,
+  weaponVelocity     = 700,
+  customparams = {
+    armor_penetration       = 120,
+  },
+  damage = {
+    default            = 2010,
+  },
+}
 
 -- Ansaldo L/46 75mm (ITA) 15 RPM
 local Ansaldo75mmL46 = MediumGunClass:New{
@@ -402,7 +413,7 @@ local Type375mmL38 = MediumGunClass:New{
   name               = [[Type 3 75mm/38]],
   range              = 1480,
   reloadTime         = 4.85,
-  soundStart         = [[GER_75mm]],
+  soundStart         = [[JPN_75mm]],
 }
 
 local Type375mmL38HE = Type375mmL38:New(MediumGunHEClass, true):New{
@@ -428,7 +439,7 @@ local Type9075mm = MediumGunClass:New{
   name               = [[Type 90 75mm]],
   range              = 1270,
   reloadTime         = 6.5,
-  soundStart         = [[GER_75mm]],
+  soundStart         = [[JPN_75mm]],
 }
 
 local Type9075mmHE = Type9075mm:New(MediumGunHEClass, true):New{
@@ -499,6 +510,7 @@ return lowerkeys({
   -- Ansaldo L/34 75mm
   Ansaldo75mmL34HE = Ansaldo75mmL34HE,
   Ansaldo75mmL34AP = Ansaldo75mmL34AP,
+  Ansaldo75mmL34HEAT = Ansaldo75mmL34HEAT,
   -- Ansaldo L/46 75mm
   Ansaldo75mmL46HE = Ansaldo75mmL46HE,
   Ansaldo75mmL46AP = Ansaldo75mmL46AP,

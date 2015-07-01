@@ -1,4 +1,4 @@
-local RUS_KomsMTB = BoatMother:New{
+local RUS_KomsMTB = ArmedBoat:New{
 	name					= "Komsomolets (Pr. 123) Class",
 	description				= "Motor Torpedo Boat",
 	acceleration			= 0.1,
@@ -14,25 +14,20 @@ local RUS_KomsMTB = BoatMother:New{
 	maxVelocity				= 4.8,
 	movementClass			= "BOAT_LightPatrol",
 	objectName				= "RUSKomsMTB.s3o",
-	soundCategory			= "RUSBoat",
 	transportCapacity		= 2, -- 2 x 1fpu turrets
 	turnRate				= 350,	
 	weapons = {	
 		[1] = {
-			name				= "RUS533mmTorpedo",
-			onlyTargetCategory	= "LARGESHIP", -- TODO: make sure (only) LCT and Gabi (LCGM? LCSL3? MAL?) are LARGESHIP
-			maxAngleDif			= 40,
-		},
-		[2] = {
-			name				= "RUS533mmTorpedo",
-			onlyTargetCategory	= "LARGESHIP",
-			maxAngleDif			= 40,
+			name				= "dshk",
+			onlyTargetCategory	= "INFANTRY SOFTVEH AIR OPENVEH TURRET",
+			mainDir				= [[0 0 -1]],
+			maxAngleDif			= 270,
 		},
 	},
 	customparams = {
-	    maxammo				= 2,
-		weaponcost			= 40,
-		weaponswithammo		= 2,
+		soundCategory			= "RUS/Boat",
+		killvoicecategory		= "RUS/Boat/RUS_BOAT_KILL",
+		killvoicephasecount		= 3,
 		children = {
 			"RUS_KomsMTB_Turret_DShK", 
 			"RUS_KomsMTB_Turret_DShK", 
@@ -44,7 +39,7 @@ local RUS_KomsMTB = BoatMother:New{
 	},
 }
 
-local RUS_KomsMTB_Turret_DShK = BoatChild:New{
+local RUS_KomsMTB_Turret_DShK = OpenBoatTurret:New{
 	name					= "Twin DShK Turret",
 	description				= "Heavy Machinegun Turret",
 	objectName				= "RUSKomsMTB_Turret_DShK.s3o",

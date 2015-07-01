@@ -16,7 +16,6 @@ end
 
 
 -- Localisations
-local DelayCall            = GG.Delay.DelayCall
 -- Synced Read
 local GetCommandQueue      = Spring.GetCommandQueue
 local GetUnitBasePosition  = Spring.GetUnitBasePosition
@@ -31,6 +30,7 @@ local GiveOrderToUnit      = Spring.GiveOrderToUnit
 local GiveOrderToUnitArray = Spring.GiveOrderToUnitArray
 
 -- Constants
+local NONBLOCKING_TIME = 30 * 5 -- how long after spawn they don't block. 5 seconds.
 
 -- Variables
 local initFrame
@@ -67,7 +67,7 @@ local function CreateSquad(unitID, unitDefID, teamID, builderID)
 	-- Get the orders for the squad spawner
 	local unitHeading = 0
 	local states = nil
-	local queue = GetCommandQueue(unitID)
+	local queue = GetCommandQueue(unitID, -1)
 
 	if builderID then
 		unitHeading = GetUnitBuildFacing(builderID)
@@ -94,10 +94,10 @@ local function CreateSquad(unitID, unitDefID, teamID, builderID)
 		end
 
 		if (i % 4 == 0) then
-			xSpace = -10
-			zSpace = zSpace + 10
+			xSpace = -2
+			zSpace = zSpace + 2
 		else
-			xSpace = xSpace + 10
+			xSpace = xSpace + 2
 		end
 	end
 
@@ -142,16 +142,16 @@ end
 
 function gadget:UnitFinished(unitID, unitDefID, teamID)
 	if squadDefs[unitDefID] then
-		DelayCall(CreateSquad, {unitID, unitDefID, teamID, builderOf[unitID]})
-	elseif transporters[unitDefID] then 
+		GG.Delay.DelayCall(CreateSquad, {unitID, unitDefID, teamID, builderOf[unitID]})
+	elseif transporters[unitDefID] then
 		-- spawn transportees
-		SpawnTransportSquad(unitID, teamID, transporters[unitDefID])
+		GG.Delay.DelayCall(SpawnTransportSquad, {unitID, teamID, transporters[unitDefID]})
 	else
 		local ud = UnitDefs[unitDefID]
 		local cp = ud.customParams
 		if cp and cp.transportsquad then
 			transporters[unitDefID] = cp.transportsquad
-			SpawnTransportSquad(unitID, teamID, cp.transportsquad)
+			GG.Delay.DelayCall(SpawnTransportSquad, {unitID, teamID, cp.transportsquad})
 		end
 	end
 end

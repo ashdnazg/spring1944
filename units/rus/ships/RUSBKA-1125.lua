@@ -1,10 +1,10 @@
-local RUS_BKA_1125 = BoatMother:New{
+local RUS_BKA_1125 = ArmedBoat:New{
 	name					= "Pr.1125 Armored Boat",
 	description				= "Armoured river gunboat",
 	acceleration			= 0.05,
 	brakeRate				= 0.025,
-	buildCostMetal			= 2125,
-	buildTime				= 2125,
+	buildCostMetal			= 3200,
+	buildTime				= 3200,
 	collisionVolumeOffsets	= [[0.0 -6.0 0.0]],
 	collisionVolumeScales	= [[24.0 12.0 160.0]],
 	corpse					= "RUSBKA-1125_dead",
@@ -14,7 +14,6 @@ local RUS_BKA_1125 = BoatMother:New{
 	maxVelocity				= 1.8,
 	movementClass			= "BOAT_RiverSmall",
 	objectName				= "RUSBKA1125.s3o",
-	soundCategory			= "RUSBoat",
 	transportCapacity		= 4, -- 4 x 1fpu turrets
 	turnRate				= 250,	
 	
@@ -25,7 +24,10 @@ local RUS_BKA_1125 = BoatMother:New{
 		},
 	},
 	customparams = {
-		children = {
+		soundCategory			= "RUS/Boat",
+		killvoicecategory		= "RUS/Boat/RUS_BOAT_KILL",
+		killvoicephasecount		= 3,
+        	children = {
 			"RUS_BKA_1125_turret_76mm", 
 			"RUS_BKA_1125_Turret_DshK_Front", 
 			"RUS_BKA_1125_Turret_DshK_Top", 
@@ -37,7 +39,7 @@ local RUS_BKA_1125 = BoatMother:New{
 	},
 }
 
-local RUS_BKA_1125_Turret_76mm = BoatChild:New{
+local RUS_BKA_1125_Turret_76mm = EnclosedBoatTurret:New{
 	name					= "Pr.1125 76mm Turret",
 	description				= "Primary Turret",
 	objectName				= "RUSBKA1125_76mm.s3o",
@@ -46,22 +48,22 @@ local RUS_BKA_1125_Turret_76mm = BoatChild:New{
 			name				= "F3476mmHE",
 			maxAngleDif			= 300,
 			onlyTargetCategory	= "BUILDING INFANTRY SOFTVEH OPENVEH HARDVEH SHIP LARGESHIP DEPLOYED",
-			mainDir		= [[0 0 1]],
+			mainDir				= [[0 0 1]],
 		},
 	},
 	customparams = {
-		maxammo					= 19,
+		maxammo					= 12,
 		weaponcost				= 12,
 		weaponswithammo			= 1,
+
 		barrelrecoildist		= 5,
 		barrelrecoilspeed		= 10,
 		turretturnspeed			= 15,
 		elevationspeed			= 20,
-		feartarget				= false, -- fully enclosed
     },
 }
 
-local RUS_BKA_1125_Turret_DshK = BoatChild:New{
+local RUS_BKA_1125_Turret_DshK = EnclosedBoatTurret:New{
 	name					= "Pr.1125 DshK Turret",
 	description				= "Heavy Machinegun Turret",
 	objectName				= "RUSBKA1125_DshK.s3o",
@@ -76,7 +78,6 @@ local RUS_BKA_1125_Turret_DshK = BoatChild:New{
 		barrelrecoilspeed		= 10,
 		turretturnspeed			= 30,
 		elevationspeed			= 45,
-		feartarget				= false, -- fully enclosed
 	},
 }
 

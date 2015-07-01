@@ -7,7 +7,7 @@ local ACClass = Weapon:New{
   explosionSpeed     = 100, -- needed?
   impulseFactor      = 0,
   movingAccuracy     = 500,
-  predictBoost       = 0,
+  predictBoost       = 0.2,
   size               = 1e-13, -- visuals done with tracers, except AP rounds
   soundHitDry        = [[GEN_Explo_1]],
   targetMoveError    = 0.1,
@@ -22,16 +22,15 @@ local ACClass = Weapon:New{
 
 -- AA Round Class
 local ACAAClass = Weapon:New{
-  accuracy           = 0,
+  accuracy           = 200,
   burnblow           = true,
-  areaOfEffect       = 30,
+  areaOfEffect       = 15,
   canattackground    = false,
   collisionSize      = 5,
   explosionGenerator = [[custom:HE_Small]],
   movingAccuracy     = 0,
   name               = [[AA Shell]],
   soundHitDry        = [[GEN_Explo_Flak1]],
-  targetMoveError    = 0,
   tolerance          = 1400,
   customparams = {
     damagetype         = [[explosive]],
@@ -190,11 +189,10 @@ local BredaM3520mm = ACClass:New{
 }
 
 local BredaM3520mmAA = BredaM3520mm:New(ACAAClass, true):New{
+  burst              = 5,
+  burstRate          = 0.2,
   range              = 1950,
   sprayAngle         = 475,
-  customparams = {
-    fearaoe            = 400,
-  },
 }
 
 local TwinBredaM3520mmAA = BredaM3520mmAA:New{
@@ -238,6 +236,8 @@ local Type9820mm = ACClass:New{
 }
 
 local Type9820mmAA = Type9820mm:New(ACAAClass, true):New{
+  burst              = 5,
+  burstRate          = 0.13,
   range              = 1950,
 }
 

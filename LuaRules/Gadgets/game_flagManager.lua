@@ -1,11 +1,11 @@
 function gadget:GetInfo()
 	return {
-		name      = "Flag Manager",
-		desc      = "Populates maps with flags and handles control",
-		author    = "FLOZi, AnalyseMetalMap algorithm from easymetal.lua by CarRepairer",
-		date      = "31st July 2008",
+		name	  = "Flag Manager",
+		desc	  = "Populates maps with flags and handles control",
+		author	  = "FLOZi, AnalyseMetalMap algorithm from easymetal.lua by CarRepairer",
+		date	  = "31st July 2008",
 		license   = "GNU GPL v2",
-		layer     = -5,
+		layer	  = -5,
 		enabled   = true  --  loaded by default?
 	}
 end
@@ -19,11 +19,13 @@ local GetFeaturePosition		= Spring.GetFeaturePosition
 local GetGroundHeight			= Spring.GetGroundHeight
 local GetGroundInfo				= Spring.GetGroundInfo
 local GetUnitsInCylinder		= Spring.GetUnitsInCylinder
+local GetUnitPosition			= Spring.GetUnitPosition
 local GetUnitTeam				= Spring.GetUnitTeam
 local GetUnitTransporter		= Spring.GetUnitTransporter
 local GetTeamRulesParam			= Spring.GetTeamRulesParam
-local GetTeamUnitDefCount 		= Spring.GetTeamUnitDefCount
-
+local GetTeamUnitDefCount		= Spring.GetTeamUnitDefCount
+local GetTeamUnitsSorted		= Spring.GetTeamUnitsSorted
+local GetUnitDefID				= Spring.GetUnitDefID
 -- Synced Ctrl
 local CallCOBScript				= Spring.CallCOBScript
 local CreateUnit				= Spring.CreateUnit
@@ -100,8 +102,6 @@ end
 if (gadgetHandler:IsSyncedCode()) then
 -- SYNCED
 
-local DelayCall = GG.Delay.DelayCall
-
 -- easymetal code starts
 local function round(num, idp)
   local mult = 10^(idp or 0)
@@ -113,9 +113,9 @@ local function mergeToSpot(spotNum, px, pz, pWeight)
 	local sx = metalSpots[spotNum].x
 	local sz = metalSpots[spotNum].z
 	local sWeight = metalSpots[spotNum].weight
-	
+
 	local avgX, avgZ
-	
+
 	if sWeight > pWeight then
 		local sStrength = round(sWeight / pWeight)
 		avgX = (sx*sStrength + px) / (sStrength +1)
@@ -123,9 +123,9 @@ local function mergeToSpot(spotNum, px, pz, pWeight)
 	else
 		local pStrength = (pWeight / sWeight)
 		avgX = (px*pStrength + sx) / (pStrength +1)
-		avgZ = (pz*pStrength + sz) / (pStrength +1)		
+		avgZ = (pz*pStrength + sz) / (pStrength +1)
 	end
-	
+
 	metalSpots[spotNum].x = avgX
 	metalSpots[spotNum].z = avgZ
 	metalSpots[spotNum].weight = sWeight + pWeight
@@ -143,50 +143,50 @@ local function NearSpot(px, pz, dist)
 end
 
 
-local function AnalyzeMetalMap()	
+local function AnalyzeMetalMap()
 	for mx_i = 1, MAP_WIDTH do
 		metalMap[mx_i] = {}
 		for mz_i = 1, MAP_HEIGHT do
 			local mx = mx_i * GRID_SIZE
 			local mz = mz_i * GRID_SIZE
 			local _, curMetal = GetGroundInfo(mx, mz)
-			if GetGroundHeight(mx, mz) <= 0 then curMetal = 0 end -- ignore water metal
 			totalMetal = totalMetal + curMetal
 			--curMetal = floor(curMetal * 100)
 			metalMap[mx_i][mz_i] = curMetal
 			if (curMetal > maxMetal) then
 				maxMetal = curMetal
-			end	
+			end
 		end
 	end
-	
+
 	local lowMetalThresh = floor(maxMetal * THRESH_FRACTION)
-	
+
 	for mx_i = 1, MAP_WIDTH do
 		for mz_i = 1, MAP_HEIGHT do
 			local mCur = metalMap[mx_i][mz_i]
 			if mCur > lowMetalThresh then
 				metalDataCount = metalDataCount +1
-				
+
 				metalData[metalDataCount] = {
 					x = mx_i * GRID_SIZE,
 					z = mz_i * GRID_SIZE,
 					metal = mCur
 				}
-				
+
 			end
 		end
 	end
-	
+
 	table.sort(metalData, function(a,b) return a.metal > b.metal end)
-	
+
 	for index = 1, metalDataCount do
 		local mx = metalData[index].x
 		local mz = metalData[index].z
 		local mCur = metalData[index].metal
-		
+		local underwater = GetGroundHeight(mx, mz) <= 0
+
 		local nearSpotNum = NearSpot(mx, mz, EXTRACT_RADIUS*EXTRACT_RADIUS)
-	
+
 		if nearSpotNum then
 			mergeToSpot(nearSpotNum, mx, mz, mCur)
 		else
@@ -194,96 +194,117 @@ local function AnalyzeMetalMap()
 			metalSpots[metalSpotCount] = {
 				x = mx,
 				z = mz,
-				weight = mCur
+				weight = mCur,
+				underwater = underwater
 			}
 		end
 	end
-	return "flag", metalSpots
-end
--- easymetal code ends
 
-function FindBuoyFeatures()
-	local BUOY_MIN_DEPTH = UnitDefNames["buoy"].minWaterDepth or 20
-	for _, featureID in pairs(Spring.GetAllFeatures()) do
-		local fd = FeatureDefs[GetFeatureDefID(featureID)]
-		if fd and fd.name == "buoy_placer" then
-			local fx, _, fz = GetFeaturePosition(featureID)
-			-- sanity check for water depth
-			if GetGroundHeight(x,z) <= -BUOY_MIN_DEPTH then
-				numBuoySpots = numBuoySpots + 1
-				buoySpots[numBuoySpots] = {
-					x = fx,
-					z = fz,
-				}
-			end
-			-- get rid of the feature regardless of whether or not it is valid
-			DestroyFeature(featureID)
+	local controlPoints = { buoy = {}, flag = {} }
+
+	for _, spot in pairs(metalSpots) do
+		if spot.underwater then
+			table.insert(controlPoints['buoy'], spot)
+		else
+			table.insert(controlPoints['flag'], spot)
 		end
 	end
-	return "buoy", buoySpots
+
+	return controlPoints
 end
+-- easymetal code ends
 
 -- this function is used to add any additional flagType specific behaviour
 function FlagSpecialBehaviour(flagType, flagID, flagTeamID, teamID)
 	if flagType == "flag" then
-		SetUnitRulesParam(flagID, "lifespan", 0)
-		env = Spring.UnitScript.GetScriptEnv(flagID)
+		local env = Spring.UnitScript.GetScriptEnv(flagID)
 		Spring.UnitScript.CallAsUnit(flagID, env.StartFlagThread, teamID)
 	end
 end
 
-function PlaceFlag(spot, flagType)
+function PlaceFlag(spot, flagType, unitID)
 	if DEBUG then
 		Spring.Echo("{")
 		Spring.Echo("	x = " .. spot.x .. ",")
 		Spring.Echo("	z = " .. spot.z .. ",")
+		Spring.Echo("	initialProduction = 5, --default value. change!")
 		Spring.Echo("},")
 	end
-	
-	local newFlag = CreateUnit(flagType, spot.x, 0, spot.z, 0, GAIA_TEAM_ID)
+
+	local newFlag = unitID or CreateUnit(flagType, spot.x, 0, spot.z, 0, GAIA_TEAM_ID)
+
+	-- this is picked up in game_handleFlagReturns to actually produce the
+	-- resources
+	if spot.initialProduction then
+		SetUnitRulesParam(newFlag, "map_config_init_production", spot.initialProduction, {public = true})
+	end
+
 	numFlags[flagType] = numFlags[flagType] + 1
 	flags[flagType][numFlags[flagType]] = newFlag
 	flagCapStatuses[newFlag] = {}
-	
+
 	SetUnitBlocking(newFlag, false, false, false)
 	SetUnitNeutral(newFlag, true)
 	SetUnitNoSelect(newFlag, true)
 	SetUnitAlwaysVisible(newFlag, true)
-	
-	
+
+
 	if modOptions and modOptions.always_visible_flags == "0" then
 		-- Hide the flags after a 1 second (30 frame) delay so they are ghosted
-		DelayCall(SetUnitAlwaysVisible, {newFlag, false}, 30)
+		GG.Delay.DelayCall(SetUnitAlwaysVisible, {newFlag, false}, 30)
 	end
+
+	table.insert(GG.flags, newFlag)
 end
 
 
-function gadget:GamePreload()
+function gadget:Initialize()
 	if DEBUG then Spring.Echo(PROFILE_PATH) end
 	-- CHECK FOR PROFILES
 	if VFS.FileExists(PROFILE_PATH) then
 		local flagSpots, buoySpots = VFS.Include(PROFILE_PATH)
-		if flagSpots and #flagSpots > 0 then 
+		if flagSpots and #flagSpots > 0 then
 			Spring.Echo("Map Flag Profile found. Loading Flag positions...")
-			flagTypeSpots["flag"] = flagSpots 
+			flagTypeSpots["flag"] = flagSpots
 		end
-		if buoySpots and #buoySpots > 0 then 
+		if buoySpots and #buoySpots > 0 then
 			Spring.Echo("Map Buoy Profile found. Loading Buoy positions...")
-			flagTypeSpots["buoy"] = buoySpots 
+			flagTypeSpots["buoy"] = buoySpots
 		end
 	end
 	-- TODO: for loop this somehow (table values can't be called, table keys can?)
-	-- IF NO FLAG PROFILE FOUND, ANALYSE METAL MAP
+	local generatedSpots = AnalyzeMetalMap()
+	-- no flag profile found, use metal map for flag spawns
 	if #flagTypeSpots["flag"] == 0 then
-		Spring.Echo("Map Flag Profile not found. Autogenerating Flag positions...")
-		local flagType, spotTable = AnalyzeMetalMap() 
-		flagTypeSpots[flagType] = spotTable
+		Spring.Echo("Map Flag Profile not found. Using autogenerated Flag positions...")
+		flagTypeSpots['flag'] = generatedSpots['flag']
 	end
-	-- IF NO BUOY PROFILE FOUND, CHECK FOR FEATURES
+	-- no buoy profile found, use metal map for flag spawns
 	if #flagTypeSpots["buoy"] == 0 then
-		Spring.Echo("Map Buoy Profile not found. Looking for Buoy features...")
-		local flagType, spotTable = FindBuoyFeatures() 
-		flagTypeSpots[flagType] = spotTable
+		Spring.Echo("Map Buoy Profile not found. Using autogenerated Buoy positions...")
+		flagTypeSpots['buoy'] = generatedSpots['buoy']
+	end
+
+	-- populated by placeFlag
+	GG.flags = {}
+	for _, flagType in pairs(flagTypes) do
+		for i = 1, #flagTypeSpots[flagType] do
+			local sx, sz = flagTypeSpots[flagType][i].x, flagTypeSpots[flagType][i].z
+			local units = GetUnitsInCylinder(sx, sz, 1)
+			for _, unitID in pairs(units) do
+				local name = UnitDefs[GetUnitDefID(unitID)].name
+				if name == flagType then
+					PlaceFlag(flagTypeSpots[flagType][i], flagType, unitID)
+					break
+				end
+			end
+		end
+	end
+
+	local allUnits = Spring.GetAllUnits()
+	for i=1,#allUnits do
+		local unitID = allUnits[i]
+		gadget:UnitCreated(unitID, GetUnitDefID(unitID))
 	end
 end
 
@@ -295,7 +316,6 @@ function gadget:GameStart()
 		for i = 1, #flagTypeSpots[flagType] do
 			PlaceFlag(flagTypeSpots[flagType][i], flagType)
 		end
-		GG[flagType .. "s"] = flags[flagType] -- nicer to have GG.flags rather than GG.flag
 	end
 end
 
@@ -357,13 +377,16 @@ function gadget:GameFrame(n)
 								-- Neutral flag being capped
 								--Spring.SendMessageToTeam(teamID, flagData.tooltip .. " Captured!")
 								TransferUnit(flagID, teamID, false)
-								SetTeamRulesParam(teamID, flagType .. "s", (GetTeamRulesParam(teamID, flagType .. "s") or 0) + 1, {public = true})
+								SetTeamRulesParam(teamID, "flags", (GetTeamRulesParam(teamID, "flags") or 0) + 1, {public = true})
 							else
 								-- Team flag being neutralised
 								--Spring.SendMessageToTeam(teamID, flagData.tooltip .. " Neutralised!")
 								TransferUnit(flagID, GAIA_TEAM_ID, false)
-								SetTeamRulesParam(teamID, flagType .. "s", (GetTeamRulesParam(teamID, flagType .. "s") or 0) - 1, {public = true})
+								SetTeamRulesParam(teamID, "flags", (GetTeamRulesParam(teamID, "flags") or 0) - 1, {public = true})
 							end
+							-- reset production
+							SetUnitRulesParam(flagID, "lifespan", 0)
+
 							-- Perform any flagType specific behaviours
 							FlagSpecialBehaviour(flagType, flagID, flagTeamID, teamID)
 							-- Turn flag back on

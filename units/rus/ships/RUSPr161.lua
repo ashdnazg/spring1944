@@ -1,4 +1,4 @@
-local RUS_Pr161 = BoatMother:New{
+local RUS_Pr161 = ArmedBoat:New{
 	name					= "Pr.161 Armoured Boat",
 	description				= "Sea-going armored gunboat",
 	acceleration			= 0.05,
@@ -14,7 +14,6 @@ local RUS_Pr161 = BoatMother:New{
 	maxVelocity				= 1.8,
 	movementClass			= "BOAT_RiverSmall",
 	objectName				= "RUSPr161.s3o",
-	soundCategory			= "RUSBoat",
 	transportCapacity		= 7, -- 7 x 1fpu turrets
 	turnRate				= 150,	
 	weapons = {	
@@ -24,6 +23,9 @@ local RUS_Pr161 = BoatMother:New{
 		},
 	},
 	customparams = {
+		soundCategory			= "RUS/Boat",
+		killvoicecategory		= "RUS/Boat/RUS_BOAT_KILL",
+		killvoicephasecount		= 3,
 		children = {
 			"RUS_Turret_45mm_Front",
 			"RUS_Pr161_Turret_85mm_Front",
@@ -40,7 +42,7 @@ local RUS_Pr161 = BoatMother:New{
 }
 
 
-local RUS_Pr161_Turret_DshK = BoatChild:New{
+local RUS_Pr161_Turret_DshK = OpenBoatTurret:New{
 	name					= "DshK Turret",
 	description				= "Heavy Machinegun Turret",
 	objectName				= "RUSPr161_Turret_DshK.s3o",
@@ -59,10 +61,10 @@ local RUS_Pr161_Turret_DshK = BoatChild:New{
 	},
 }
 
-local RUS_Pr161_Turret_85mm_Front = BoatChild:New{
+local RUS_Pr161_Turret_85mm_Front = EnclosedBoatTurret:New{
 	name					= "85mm Turret",
 	description				= "Primary Turret",
-	objectName				= "RUSPr161_Turret_85mm.s3o",
+	objectName				= "RUSBKA1125_76mm.s3o",
   	weapons = {	
 		[1] = {
 			name				= "S5385mmHE",
@@ -71,14 +73,13 @@ local RUS_Pr161_Turret_85mm_Front = BoatChild:New{
 		},
 	},
 	customparams = {
-		maxammo					= 22,
+		maxammo					= 16,
 		weaponcost				= 17,
 		weaponswithammo			= 1,
 		barrelrecoildist		= 7.5,
 		barrelrecoilspeed		= 10,
 		turretturnspeed			= 15,
 		elevationspeed			= 20,
-		feartarget				= false, -- fully enclosed
     },
 }
 local RUS_Pr161_Turret_85mm_Rear = RUS_Pr161_Turret_85mm_Front:New{

@@ -15,6 +15,7 @@
   corpse=SandbagMG_Destroyed;
   [customParams] {
     feartarget=1;
+    soundcategory=ITA/Infantry;
   }
   footprintX=2;
   footprintZ=2;
@@ -38,14 +39,13 @@
   side=ITA;
   sightDistance=840;
   smoothAnim=0;
-  soundcategory=ITAInf;
   stealth=1;
   useBuildingGroundDecal=1;
   badTargetCategory=OPENVEH FLAG SOFTVEH;
 
   weapon1=BredaM37;
   maxAngleDif1=120;
-  onlyTargetCategory1=OPENVEH INFANTRY SOFTVEH DEPLOYED;
+  onlyTargetCategory1=INFANTRY SOFTVEH DEPLOYED;
   weaponMainDir1=0 0 1;
 
   weapon2=Small_Tracer;

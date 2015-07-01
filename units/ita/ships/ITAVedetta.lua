@@ -1,4 +1,4 @@
-local ITA_Vedetta = BoatMother:New{
+local ITA_Vedetta = ArmedBoat:New{
 	name					= "Classe Vedetta",
 	description				= "Patrol Gunboat",
 	acceleration			= 0.075,
@@ -14,7 +14,6 @@ local ITA_Vedetta = BoatMother:New{
 	maxVelocity				= 1.56,
 	movementClass			= "BOAT_LightPatrol",
 	objectName				= "ITAVedetta.s3o",
-	soundCategory			= "ITABoat",
 	transportCapacity		= 4, -- 4 x 1fpu turrets
 	turnRate				= 140,	
 	weapons = {	
@@ -24,6 +23,7 @@ local ITA_Vedetta = BoatMother:New{
 		},
 	},
 	customparams = {
+		soundcategory		= "ITA/Boat",
 		children = {
 			"ITA_Vedetta_Turret_76mm", 
 			"ITA_Vedetta_Turret_MG", 
@@ -36,7 +36,7 @@ local ITA_Vedetta = BoatMother:New{
 	},
 }
 
-local ITA_Vedetta_Turret_76mm = BoatChild:New{
+local ITA_Vedetta_Turret_76mm = OpenBoatTurret:New{
 	name					= "76mm Turret",
 	description				= "Primary Turret",
 	objectName				= "ITAVedetta_Turret_76mm.s3o",
@@ -47,8 +47,8 @@ local ITA_Vedetta_Turret_76mm = BoatChild:New{
 		},
 	},
 	customparams = {
-		maxammo					= 7,
-		weaponcost				= 18, -- !?
+		maxammo					= 16,
+		weaponcost				= 12,
 		weaponswithammo			= 1,
 		barrelrecoildist		= 7,
 		barrelrecoilspeed		= 10,
@@ -57,7 +57,7 @@ local ITA_Vedetta_Turret_76mm = BoatChild:New{
 	},
 }
 
-local ITA_Vedetta_Turret_MG = BoatChild:New{
+local ITA_Vedetta_Turret_MG = OpenBoatTurret:New{
 	name					= "MG Turret",
 	description				= "Heavy Machinegun Turret",
 	objectName				= "ITAVedetta_Turret_MG.s3o",

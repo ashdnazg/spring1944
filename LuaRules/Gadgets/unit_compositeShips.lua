@@ -17,6 +17,7 @@ local GetUnitDefID			= Spring.GetUnitDefID
 local GetUnitPosition		= Spring.GetUnitPosition
 local GetUnitTransporter	= Spring.GetUnitTransporter
 local GetUnitsInCylinder	= Spring.GetUnitsInCylinder
+local ValidUnitID			= Spring.ValidUnitID
 -- Synced Ctrl
 local GiveOrderToUnit		= Spring.GiveOrderToUnit
 local AddUnitDamage			= Spring.AddUnitDamage
@@ -25,14 +26,12 @@ local TransferUnit			= Spring.TransferUnit
 
 if (gadgetHandler:IsSyncedCode()) then -- SYNCED
 
-local DelayCall = GG.Delay.DelayCall
-
 -- Constants
 local MIN_HEALTH = 1 -- No fewer HP than this
 local HEALTH_RESTORE_LEVEL = 0.5 -- What % of maxHP to restore turret function
 
 -- Variables
-local motherCache = {} -- unitID = {child1ID, child2ID ...}
+GG.boatMothers = {} -- unitID = {child1ID, child2ID ...}
 local childCache = {} -- unitID = motherID
 local deadChildren = {} -- unitID = true
 
@@ -42,20 +41,31 @@ local passedCmds = {[CMD.ATTACK] = true, [CMD.FIRE_STATE] = true, [CMD.STOP] = t
 function gadget:UnitCreated(unitID, unitDefID, teamID)
 	local ud = UnitDefs[unitDefID]
 	local cp = ud.customParams
-	if cp then
-		motherCache[unitID] = cp.mother and {} or nil -- to be populated in UnitLoaded
-		childCache[unitID] = cp.child -- ditto
+	if cp.mother then
+		GG.boatMothers[unitID] = {}
+		local toRemove = {CMD.LOAD_UNITS, CMD.UNLOAD_UNITS}
+		for _, cmdID in pairs(toRemove) do
+			local cmdDescID = Spring.FindUnitCmdDesc(unitID, cmdID)
+			Spring.RemoveUnitCmdDesc(unitID, cmdDescID)
+		end
+	elseif cp.child then
+		childCache[unitID] = true
+		local toRemove = {CMD.MOVE_STATE, CMD.MOVE}
+		for _, cmdID in pairs(toRemove) do
+			local cmdDescID = Spring.FindUnitCmdDesc(unitID, cmdID)
+			Spring.RemoveUnitCmdDesc(unitID, cmdDescID)
+		end
 	end
 end
 
 function gadget:UnitDestroyed(unitID, unitDefID, unitTeam)
-	motherCache[unitID] = nil
+	GG.boatMothers[unitID] = nil
 	childCache[unitID] = nil
 	deadChildren[unitID] = nil
 end
 
 function gadget:UnitGiven(unitID, unitDefID, newTeam, oldTeam)
-	local children = motherCache[unitID]
+	local children = GG.boatMothers[unitID]
 	if children then
 		for _, childID in pairs(children) do
 			TransferUnit(childID, newTeam, true)
@@ -67,7 +77,7 @@ function gadget:UnitLoaded(unitID, unitDefID, unitTeam, transportID, transportTe
 	if childCache[unitID] then
 		--Spring.Echo("CHILD LOADED", unitID, transportID)
 		childCache[unitID] = transportID -- set value to unitID of mother
-		table.insert(motherCache[transportID], unitID) -- insert into mothers list
+		table.insert(GG.boatMothers[transportID], unitID) -- insert into GG.boatMothers list
 	end 
 end
 
@@ -79,6 +89,10 @@ local function DisableChild(childID, disable)
 end
 
 function gadget:UnitPreDamaged(unitID, unitDefID, unitTeam, damage, paralyzer, weaponDefID, projectileID, attackerID, attackerDefID, attackerTeam)
+	if childCache[attackerID] == unitID then
+		return 0
+	end
+	
 	if not childCache[unitID] then return damage end
 	-- unit is a child
 	local health = Spring.GetUnitHealth(unitID)
@@ -90,8 +104,19 @@ function gadget:UnitPreDamaged(unitID, unitDefID, unitTeam, damage, paralyzer, w
 		local passThroughDamage = damage - newDamage
 		local mother = childCache[unitID]
 		if mother and not Spring.GetUnitIsDead(mother) then
-			AddUnitDamage(mother, passThroughDamage, 0, attackerID)
-			Spring.SetUnitTarget(attackerID, mother, false, true)
+			local wd = WeaponDefs[weaponDefID]
+			local smallarmsDamage = wd.customParams and wd.customParams.damagetype == 'smallarm'
+			-- hulls (mothers) don't take smallarms damage
+			if not smallarmsDamage then
+				AddUnitDamage(mother, passThroughDamage, 0, attackerID)
+			end
+			-- if one turret happens to damage another (disabled) one on the same ship,
+			-- don't try to target oneself
+			if attackerID ~= mother then
+				if ValidUnitID(attackerID) and ValidUnitID(mother) then
+					Spring.SetUnitTarget(attackerID, mother, false, true)
+				end
+			end
 		end
 		return newDamage
 	end
@@ -110,7 +135,7 @@ function gadget:GameFrame(n)
 end
 
 function gadget:AllowCommand(unitID, unitDefID, unitTeam, cmdID, cmdParams, cmdOptions, cmdTag, synced)
-	local motherChildren = motherCache[unitID]
+	local motherChildren = GG.boatMothers[unitID]
 	if motherChildren and passedCmds[cmdID] then
 		GG.Delay.DelayCall(Spring.GiveOrderToUnitArray, {motherChildren, cmdID, cmdParams, cmdOptions}, 1)
 	end

@@ -24,6 +24,7 @@
     enginesoundnr=18;
     feartarget=1;
     proptexture=prop3.tga;
+    soundcategory=GER/Air;
   }
   explodeAs=Vehicle_Explosion_Med;
   footprintX=4;
@@ -61,13 +62,13 @@
   smoothAnim=1;
   stealth=1;
   turnRate=50;
-  badTargetCategory=AIR;
-
-  weapon1=mg42aa;
-  maxAngleDif1=90;
-  onlyTargetCategory1=AIR;
-  weaponMainDir1=0 .75 -1;
-
-  weapon2=Small_Tracer;
+  //badTargetCategory=AIR;
+  //
+  //weapon1=mg42aa;
+  //maxAngleDif1=90;
+  //onlyTargetCategory1=AIR;
+  //weaponMainDir1=0 .75 -1;
+  //
+  //weapon2=Small_Tracer;
 }
 

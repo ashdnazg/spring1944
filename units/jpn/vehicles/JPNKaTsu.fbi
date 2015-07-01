@@ -24,6 +24,7 @@
     supplyRange=200;
 	hasturnbutton=1;
 	transportsquad=jpn_platoon_amph;
+    soundcategory=JPN/Vehicle;
   }
   explodeAs=Vehicle_Explosion_Sm;
   footprintX=3;
@@ -40,7 +41,7 @@
   movementClass=HOVER_AmphibTruck;
   noChaseCategory=FLAG AIR MINE HARDVEH BUILDING;
   objectName=JPNKaTsu.s3o;
-  releaseHeld=1;
+  releaseHeld=0;
   seismicSignature=0;
   selfDestructAs=Vehicle_Explosion_Sm;
   [sfxtypes] {
@@ -57,7 +58,6 @@
   side=JPN;
   sightDistance=840;
   smoothAnim=0;
-  soundcategory=JPNVeh;
   stealth=1;
   trackOffset=10;
   trackStrength=6.5;
@@ -67,7 +67,7 @@
   transportCapacity=30;
   transportMass=750;
   transportSize=1;
-  transportUnloadMethod=2;
+  transportUnloadMethod=0;
   turninplace=0;
   turnRate=400;
   unloadSpread=2;

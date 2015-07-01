@@ -115,7 +115,7 @@ local jpnDefs = {
 		buildTime = 400,
 		side = "JPN",
 	},
-	
+
 	["jpn_platoon_daihatsu"] =
 	{
 		members = {
@@ -160,6 +160,7 @@ local jpnDefs = {
 			"jpntype3at",
 			"jpnobserv",
 		},
+        buildCostMetal = 6000,
 		-- other fields not needed for transport squads
 	},
 	["jpn_platoon_amph"] =
@@ -172,7 +173,7 @@ local jpnDefs = {
 			"jpntype3at",
 			"jpnrifle",
 			"jpnrifle",
-            		"jpnhqengineer",
+			"jpnhqengineer",
 			"jpnrifle",
 			"jpnrifle",
 			"jpnrifle",
@@ -183,7 +184,7 @@ local jpnDefs = {
 	{
 		members = {
 
-			"jpntype99lmg",
+			"jpntype100smg",
 			"jpntype100smg",
 			"jpntype100smg",
 			"jpntype3at",
@@ -192,7 +193,22 @@ local jpnDefs = {
 			"jpnrifle",
 			"jpnrifle",
 			"jpnrifle",
+			"jpntype99lmg",
 		},
+	},
+	["jpn_tankette_platoon_teke"] =
+	{
+		members = {
+			"jpnteke",
+			"jpnteke_hmg",
+		},
+		name = "Tankette Platoon",
+		description = "1 x tankette Te-Ke 37mm, 1 x tankette Te-Ke 7.7mm",
+		buildCostMetal = 1000,
+		buildPic = "JPNteke.png",
+		objectName = "JPNteke_build.s3o",
+		buildTime = 1000,
+		side = "JPN",
 	},
 	["jpn_platoon_tokudaihatsu"] =
 	{

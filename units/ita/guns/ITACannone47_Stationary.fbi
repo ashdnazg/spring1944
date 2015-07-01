@@ -13,12 +13,14 @@
   category=DEPLOYED;
   corpse=ITACannone47_Destroyed;
   [customParams] {
-	hiddenbuilding=1;
+    dontCount=1;
+    hiddenbuilding=1;
     feartarget=1;
     lowammolevel=1;
     maxammo=4;
     weaponcost=10;
     weaponswithammo=1;
+    soundcategory=ITA/Gun;
   }
   flankingBonusDir=0.0 0.0 1.0;
   flankingBonusMax=1.25;
@@ -52,7 +54,6 @@
   side=ITA;
   sightDistance=701;
   smoothAnim=0;
-  soundcategory=ITAGun;
   stealth=1;
   useBuildingGroundDecal=1;
   badTargetCategory=FLAG;

@@ -24,6 +24,7 @@
     enginesoundnr=12;
     feartarget=1;
     proptexture=prop3.tga;
+    soundcategory=ITA/Air;
   }
   explodeAs=Vehicle_Explosion_Med;
   footprintX=4;
@@ -32,17 +33,18 @@
   idleAutoHeal=2;
   idleTime=1800;
   maneuverleashlength=1280;
-  maxAcc=0.677;
+  maxAcc=0.777;
   maxAileron=0.00465;
   maxBank=1;
   maxDamage=224.7;
-  maxElevator=0.0036;
-  maxFuel=120;
+  maxElevator=0.004;
+  maxFuel=90;
   maxPitch=1;
-  maxRudder=0.002775;
+  maxRudder=0.00375;
   maxSlope=10;
   maxVelocity=18.9;
   myGravity=0.6;
+  radarDistance=1000;
   noChaseCategory=FLAG MINE HARDVEH BUILDING;
   objectName=ITAMC202.s3o;
   repairable=0;

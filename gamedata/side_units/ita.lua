@@ -54,6 +54,13 @@ local itaunits =
     "itatankobstacle",
   },
 
+  itabreda61 =
+  {
+    "itaatminesign",
+    "itaapminesign",
+    "itatankobstacle",
+  },
+  
   itabarracks =
   {
     "itahqengineer",
@@ -61,7 +68,7 @@ local itaunits =
     "ita_platoon_rifle",
     "ita_platoon_assault",
     "ita_platoon_mg",
-    --"ita_platoon_at",
+    "ita_platoon_at",
     "ita_platoon_sniper",
     "ita_platoon_mortar",
 	"itafiat626",
@@ -77,7 +84,7 @@ local itaunits =
     "ita_platoon_rifle",
     "ita_platoon_assault",
     "ita_platoon_mg",
-    --"ita_platoon_at",
+    "ita_platoon_at",
     "ita_platoon_sniper",
     "ita_platoon_mortar",
 	"ita_platoon_alpini",
@@ -132,6 +139,7 @@ local itaunits =
   itavehicleyard =
   {
 	"itabreda41",
+	"itabreda61",
 	"itafiat626",
 	"itaab41",
 	"itaas37",
@@ -143,6 +151,7 @@ local itaunits =
    itavehicleyard1 =
   {
 	"itabreda41",
+	"itabreda61",
 	"itafiat626",
 	"itaab41",
 	"itaas37",

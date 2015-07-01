@@ -67,8 +67,18 @@ local QF25Pdr = HowitzerClass:New{
     default            = 1088,
   },
 }
+
+-- QF 25pdr on a boat
+local NavalQF25Pdr = QF25Pdr:New{
+  accuracy           = 1400,
+}
+
 local QF25PdrHE = QF25Pdr:New(HowitzerHEClass, true)
 local QF25PdrSmoke = QF25Pdr:New(HowitzerSmokeClass, true)
+
+local NavalQF25PdrHE = NavalQF25Pdr:New(HowitzerHEClass, true)
+local NavalQF25PdrSmoke = NavalQF25Pdr:New(HowitzerSmokeClass, true)
+
 
 -- 10.5cm LeFH 18/40 (GER)
 local LeFH18 = HowitzerClass:New{
@@ -121,8 +131,9 @@ local Obice100mmL22 = HowitzerClass:New{
   accuracy           = 1050,
   areaOfEffect       = 115,
   name               = [[Obice 100mm/22 M14]],
+  soundStart         = [[ITA_100mm]],
   range              = 7200,
-  reloadtime         = 11.25,
+  reloadtime         = 10.25,
   damage = {
     default            = 3800,
   },
@@ -135,6 +146,7 @@ local Obice100mmL17 = HowitzerClass:New{
   accuracy           = 1150,
   areaOfEffect       = 115,
   name               = [[Obice 100mm/17 M14]],
+  soundStart         = [[ITA_100mm]],
   range              = 6000,
   reloadtime         = 9.25,
   damage = {
@@ -146,13 +158,13 @@ local Obice100mmL17Smoke = Obice100mmL17:New(HowitzerSmokeClass, true)
 
 -- Type 91 105m howitzer L/24 (JPN)
 local Type91105mmL24 = HowitzerClass:New{
-  accuracy           = 1050,
-  areaOfEffect       = 115,
+  accuracy           = 1000,
+  areaOfEffect       = 125,
   name               = [[Type 91 105mm/24]],
   range              = 7200,
   reloadtime         = 11.25,
   damage = {
-    default            = 3800,
+    default            = 4050,
   },
 }
 local Type91105mmL24HE = Type91105mmL24:New(HowitzerHEClass, true)
@@ -162,6 +174,8 @@ local Type91105mmL24Smoke = Type91105mmL24:New(HowitzerSmokeClass, true)
 return lowerkeys({
   QF25PdrHE = QF25PdrHE,
   QF25PdrSmoke = QF25PdrSmoke,
+  NavalQF25PdrHE = NavalQF25PdrHE,
+  NavalQF25PdrSmoke = NavalQF25PdrSmoke,
   LeFH18HE = LeFH18HE,
   LeFH18Smoke = LeFH18Smoke,
   M2HE = M2HE,

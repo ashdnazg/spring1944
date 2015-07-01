@@ -1,4 +1,4 @@
-local GBR_LCSL = BoatMother:New{
+local GBR_LCSL = ArmedBoat:New{
 	name					= "LCS(L) Mk. 2",
 	description				= "Landing Craft Support",
 	acceleration			= 0.025,
@@ -14,7 +14,6 @@ local GBR_LCSL = BoatMother:New{
 	maxVelocity				= 1.4,
 	movementClass			= "BOAT_LightPatrol",
 	objectName				= "GBRLCSL.s3o",
-	soundCategory			= "GBRBoat",
 	transportCapacity		= 5, -- 5 x 1fpu turrets
 	turnRate				= 240,	
 	weapons = {	
@@ -24,6 +23,7 @@ local GBR_LCSL = BoatMother:New{
 		},
 	},
 	customparams = {
+		soundcategory		= "GBR/Boat",
 		children = {
 			"GBR_LCSL_Turret_4inMortar",
 			"GBR_LCSL_Turret_6pdr",
@@ -37,7 +37,7 @@ local GBR_LCSL = BoatMother:New{
 	},
 }
 
-local GBR_LCSL_Turret_4inMortar = BoatChild:New{
+local GBR_LCSL_Turret_4inMortar = OpenBoatTurret:New{
 	name					= "4in Smoke Mortar",
 	description				= "Smoke Launcher",
 	objectName				= "GBRLCSL_Turret_4inMortar.s3o",
@@ -58,7 +58,7 @@ local GBR_LCSL_Turret_4inMortar = BoatChild:New{
 }
 
 
-local GBR_LCSL_Turret_Vickers50 = BoatChild:New{
+local GBR_LCSL_Turret_Vickers50 = OpenBoatTurret:New{
 	name					= "Vickers 50cal Turret",
 	description				= "Heavy Machinegun Turret",
 	objectName				= "GBRLCSL_Turret_Vickers50.s3o",
@@ -85,7 +85,7 @@ local GBR_LCSL_Turret_Vickers50 = BoatChild:New{
 	},
 }
 
-local GBR_LCSL_Turret_6pdr = BoatChild:New{
+local GBR_LCSL_Turret_6pdr = EnclosedBoatTurret:New{
 	name					= "6Pdr Turret",
 	description				= "Primary Turret",
 	objectName				= "GBRLCSL_Turret_6pdr.s3o",
@@ -105,17 +105,17 @@ local GBR_LCSL_Turret_6pdr = BoatChild:New{
 		maxammo					= 10,
 		weaponcost				= 10,
 		weaponswithammo			= 2,
+
 		barrelrecoildist		= 7,
 		barrelrecoilspeed		= 10,
 		turretturnspeed			= 30,
 		elevationspeed			= 20,
 		aaweapon				= 2, -- TODO: rename to something more generic e.g. masterweapon
-		feartarget				= false, -- fully enclosed
     },
 }
 
 
-local GBR_LCSL_Turret_20mm_Left = BoatChild:New{
+local GBR_LCSL_Turret_20mm_Left = OpenBoatTurret:New{
 	name					= "Oerlikon 20mm Turret",
 	description				= "20mm AA Turret",
 	objectName				= "GBRLCSL_Turret_20mm.s3o",
@@ -134,6 +134,10 @@ local GBR_LCSL_Turret_20mm_Left = BoatChild:New{
 		},
 	},
 	customparams = {
+		maxammo					= 14,
+		weaponcost				= 4,
+		weaponswithammo			= 2,
+
 		barrelrecoildist		= 2,
 		barrelrecoilspeed		= 10,
 		turretturnspeed			= 45,

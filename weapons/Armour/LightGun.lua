@@ -57,6 +57,7 @@ local LightGunAPClass = Weapon:New{
 local LightGunHEATClass = Weapon:New{
   collisionSize      = 3,
   edgeEffectiveness  = 0.2,
+  impactonly         = true,
   explosionGenerator = [[custom:EP_medium]],
   explosionSpeed     = 30, -- needed?
   name               = [[HEAT Shell]],
@@ -153,15 +154,15 @@ local M637mmAP = M637mm:New(LightGunAPClass, true):New{
 local M1938_20K45mm = LightGunClass:New{
   name               = [[20K M1938 45mm]],
   range              = 980,
-  reloadTime         = 4.8, -- Naval is 2.4 HE, 3.2 AP?
+  reloadTime         = 4.8,
   soundStart         = [[RUS_45mm]],
 }
 
 local M1938_20K45mmHE = M1938_20K45mm:New(LightGunHEClass, true):New{
-  areaOfEffect       = 52, -- Naval is 47?
+  areaOfEffect       = 52,
   weaponVelocity     = 1584,
   damage = {
-    default            = 270, -- Naval is 200?
+    default            = 270,
   },  
 }
 local M1938_20K45mmAP = M1938_20K45mm:New(LightGunAPClass, true):New{
@@ -177,13 +178,7 @@ local M1938_20K45mmAP = M1938_20K45mm:New(LightGunAPClass, true):New{
 
 -- Naval copy, only HE used currently. Should these values be so different?
 local M1937_40K45mmHE = M1938_20K45mmHE:New{
-  areaOfEffect         = 47,
   name                 = [[40K 45mm Naval Gun HE Shell]],
-  range                = 1310,
-  reloadTime           = 2.4, -- this one probably makes the most sense if its an open mount as opposed to cramped turret
-  damage = {
-    default            = 200,
-  },  
 }
 
 -- Cannone da 47/32 M35 (ITA)
@@ -235,7 +230,7 @@ local CannoneDa47mml40HE = CannoneDa47mml40:New(LightGunHEClass, true):New{
   },  
 }
 
-local CannoneDa47mml40AP = M637mm:New(LightGunAPClass, true):New{
+local CannoneDa47mml40AP = CannoneDa47mml40:New(LightGunAPClass, true):New{
   weaponVelocity     = 1818,
   customparams = {
     armor_penetration_1000m = 43,
@@ -245,14 +240,24 @@ local CannoneDa47mml40AP = M637mm:New(LightGunAPClass, true):New{
     default            = 1225,
   },
 }
+local CannoneDa47mml40HEAT = CannoneDa47mml40:New(LightGunHEATClass, true):New{
+  range                = 708,
+  weaponVelocity       = 900,
+  customparams = {
+    armor_penetration       = 115,
+  },
+  damage = {
+    default            = 1048,
+  },
+}
 
 
 -- Type 1 37mm (JPN)
 local Type137mm = LightGunClass:New{
   name                 = [[Type 1 37 mm Gun]],
   range                = 950,
-  reloadTime           = 4.0,
-  soundStart           = [[RUS_45mm]],
+  reloadTime           = 4.4,
+  soundStart           = [[US_37mm]],
 }
 
 local Type137mmHE = Type137mm:New(LightGunHEClass, true):New{
@@ -277,7 +282,7 @@ local Type137mmAP = Type137mm:New(LightGunAPClass, true):New{
 
 -- Type 98 37mm (JPN)
 local Type9837mm = LightGunClass:New{
-  name                 = [[Type 97 37 mm Gun]],
+  name                 = [[Type 98 37 mm Gun]],
   range                = 930,
   reloadTime           = 4.0,
   soundStart           = [[RUS_45mm]],
@@ -302,16 +307,16 @@ local Type9837mmAP = Type9837mm:New(LightGunAPClass, true):New{
   },
 }
 
--- Type 98 37mm (JPN)
+-- Type 94 37mm (JPN)
 local Type9437mm = LightGunClass:New{
   name                 = [[Type 94 37 mm Gun]],
   range                = 900,
-  reloadTime           = 4.0,
+  reloadTime           = 4.8,
   soundStart           = [[RUS_45mm]],
 }
 
 local Type9437mmHE = Type9437mm:New(LightGunHEClass, true):New{
-  areaOfEffect       = 28,
+  areaOfEffect       = 32,
   weaponVelocity     = 800,
   damage = {
     default            = 220,
@@ -331,9 +336,9 @@ local Type9437mmAP = Type9437mm:New(LightGunAPClass, true):New{
 
 -- Type 1 47mm (JPN)
 local Type147mm = LightGunClass:New{
-  name                 = [[Type 1 37 mm Gun]],
-  range                = 1000,
-  reloadTime           = 4.0,
+  name                 = [[Type 1 47 mm Gun]],
+  range                = 1100,
+  reloadTime           = 4.5,
   soundStart           = [[RUS_45mm]],
 }
 
@@ -377,13 +382,14 @@ return lowerkeys({
   -- Cannone da 47/40
   CannoneDa47mml40HE = CannoneDa47mml40HE,
   CannoneDa47mml40AP = CannoneDa47mml40AP,
+  CannoneDa47mml40HEAT = CannoneDa47mml40HEAT,
   -- Japanese 37mms
   Type137mmHE = Type137mmHE,
   Type137mmAP = Type137mmAP,
   Type9837mmHE = Type9837mmHE,
-  Type9837mmAP = Type9837mmHE,
+  Type9837mmAP = Type9837mmAP,
   Type9437mmHE = Type9437mmHE,
-  Type9437mmAP = Type9437mmHE,
+  Type9437mmAP = Type9437mmAP,
   -- Type 1 47mm
   Type147mmHE = Type147mmHE,
   Type147mmAP = Type147mmAP,

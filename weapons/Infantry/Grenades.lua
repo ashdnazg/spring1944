@@ -23,7 +23,7 @@ local APGrenadeClass = GrenadeClass:New{
   collisionSize      = 1e-100,
   edgeEffectiveness  = 0.8,
   explosionGenerator = [[custom:HE_Small]],
-  movingAccuracy     = 3500,
+  movingAccuracy     = 1000,
   range              = 180,
   reloadtime         = 8,
   soundHitDry        = [[GEN_Explo_Grenade]],
@@ -40,9 +40,10 @@ local APGrenadeClass = GrenadeClass:New{
 local ATGrenadeClass = GrenadeClass:New{
   edgeEffectiveness  = 0.5,
   explosionGenerator = [[custom:HE_Medium]],
-  movingAccuracy     = 7111,
+  movingAccuracy     = 1000,
   range              = 230,
   reloadTime         = 5,
+  predictBoost       = 0.5,
   soundHitDry        = [[GEN_Explo_3]],
   customparams = {
     damagetype         = [[shapedcharge]],
@@ -131,7 +132,7 @@ local Type99Grenade = APGrenadeClass:New{
 -- AT nades
 -- RPG-43 AT Nade (RUS)
 local RPG43 = ATGrenadeClass:New{
-  accuracy           = 400,
+  accuracy           = 200,
   areaOfEffect       = 24,
   name               = [[RPG-43 Anti-Tank Grenade]],
   customparams = {
@@ -172,14 +173,14 @@ local L_type_grenade = ATGrenadeClass:New{
 
 -- Type 3 AT Grenade (JPN)
 local Type3AT = ATGrenadeClass:New{
-  accuracy           = 400,
+  accuracy           = 200,
   areaOfEffect       = 24,
   name               = [[Type 3 Anti-Tank Grenade]],
   customparams = {
-    armor_penetration  = 75,
+    armor_penetration  = 70,
   },
   damage = {
-    default            = 4896,
+    default            = 4206,
   },  
 }
 

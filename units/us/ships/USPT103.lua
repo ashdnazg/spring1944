@@ -1,10 +1,10 @@
-local US_PT103 = BoatMother:New{
+local US_PT103 = ArmedBoat:New{
 	name					= "PT-103 Type",
 	description				= "Patrol Torpedo Boat",
 	acceleration			= 0.3,
 	brakeRate				= 0.15,
-	buildCostMetal			= 1400,
-	buildTime				= 1400,
+	buildCostMetal			= 2100,
+	buildTime				= 2100,
 	collisionVolumeOffsets	= [[0.0 -16.0 0.0]],
 	collisionVolumeScales	= [[35.0 18.0 240.0]],
 	corpse					= "USPT103_dead",
@@ -24,6 +24,7 @@ local US_PT103 = BoatMother:New{
 		},
 	},
 	customparams = {
+		soundcategory = "US/Boat",
 		children = {
 			"US_PT103_Turret_20mm",
 			"US_PT103_Turret_Twin50",
@@ -38,7 +39,7 @@ local US_PT103 = BoatMother:New{
 }
 
 
-local US_PT103_Turret_Twin50 = BoatChild:New{
+local US_PT103_Turret_Twin50 = OpenBoatTurret:New{
 	name					= "Browning 50cal Turret",
 	description				= "Heavy Machinegun Turret",
 	objectName				= "USPT103_Turret_Twin50.s3o",
@@ -60,7 +61,7 @@ local US_PT103_Turret_Twin50 = BoatChild:New{
 }
 
 
-local US_PT103_Turret_20mm = BoatChild:New{
+local US_PT103_Turret_20mm = OpenBoatTurret:New{
 	name					= "Oerlikon 20mm Turret",
 	description				= "20mm AA Turret",
 	objectName				= "USPT103_Turret_20mm.s3o",
@@ -77,6 +78,10 @@ local US_PT103_Turret_20mm = BoatChild:New{
 		},
 	},
 	customparams = {
+		maxammo					= 14,
+		weaponcost				= 4,
+		weaponswithammo			= 2,
+
 		barrelrecoildist		= 2,
 		barrelrecoilspeed		= 10,
 		turretturnspeed			= 45,
@@ -85,7 +90,7 @@ local US_PT103_Turret_20mm = BoatChild:New{
 	},
 }
 
-local US_PT103_Turret_Bofors = BoatChild:New{
+local US_PT103_Turret_Bofors = OpenBoatTurret:New{
 	name					= "40mm Bofors Turret",
 	description				= "Primary Turret",
 	objectName				= "USPT103_Turret_Bofors.s3o",
@@ -105,9 +110,10 @@ local US_PT103_Turret_Bofors = BoatChild:New{
 		},
 	},
 	customparams = {
-	    maxammo					= 16, -- TODO: from RUSBMO 37mm
-		weaponcost				= 3,
+		maxammo					= 10,
+		weaponcost				= 8,
 		weaponswithammo			= 2,
+
 		barrelrecoildist		= 4,
 		barrelrecoilspeed		= 20,
 		turretturnspeed			= 90,

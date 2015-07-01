@@ -5,6 +5,7 @@ local ATRifleClass = Weapon:New{
   areaOfEffect       = 1,
   avoidFeature       = true,
   avoidFriendly      = false,
+  burnblow           = false,
   collideFeature     = true,
   collideFriendly    = false,
   collisionSize      = 2.5,
@@ -64,7 +65,6 @@ local Solothurn = ATRifleClass:New{
   },
   damage = {
     default            = 402,
-    infantry		= 100,
   },
 }
 

@@ -2,7 +2,7 @@ local itaDefs = {
 	 -----------------------------
 	 -- ITA Platoons and Squads --
 	 -----------------------------
-	
+
 	["ita_platoon_hq"] =
 	{
 		members = {
@@ -20,8 +20,8 @@ local itaDefs = {
 		buildTime = 580,
 		side = "ITA",
 	},
-	
-	["ita_platoon_rifle"] = 
+
+	["ita_platoon_rifle"] =
 	{
 		members = {
 			"itasoloat",
@@ -42,8 +42,8 @@ local itaDefs = {
 		buildTime = 1410,
 		side = "ITA",
 	},
-	
-	["ita_platoon_assault"] = 
+
+	["ita_platoon_assault"] =
 	{
 		members = {
 			"itam38",
@@ -64,8 +64,8 @@ local itaDefs = {
 		buildTime = 1400,
 		side = "ITA",
 	},
-	
-	["ita_platoon_mg"] = 
+
+	["ita_platoon_mg"] =
 	{
 		members = {
 			"itamg",
@@ -80,8 +80,8 @@ local itaDefs = {
 		buildTime = 1200,
 		side = "ITA",
 	},
-	
-	["ita_platoon_sniper"] = 
+
+	["ita_platoon_sniper"] =
 	{
 		members = {
 			"itasniper",
@@ -94,8 +94,8 @@ local itaDefs = {
 		buildTime = 1140,
 		side = "ITA",
 	},
-	
-	["ita_platoon_mortar"] = 
+
+	["ita_platoon_mortar"] =
 	{
 		members = {
 			"itamortar",
@@ -110,22 +110,39 @@ local itaDefs = {
 		buildTime = 1580,
 		side = "ITA",
 	},
-	
-	["ita_platoon_at"] = 
+
+	["ita_platoon_at"] =
 	{
 		members = {
+			"itapanzerfaust",
+			"itapanzerfaust",
+			"itapanzerfaust",
 			"itasoloat",
-			"itasoloat",
-			"itasoloat",
-			"itaelitesoloat",
 		},
 		name = "Anti-Tank Squad",
-		description = "3 x Solothurn + 1 x Elitesolothurn  : Anti-Tank Infantry",
-		buildCostMetal = 800,
-		buildPic = "ITASolothurn.png",
-		buildTime = 900,
+		description = "3 x Panzerfaust, 1 x Solothurn: Anti-Tank Infantry",
+		buildCostMetal = 520,
+		buildPic = "ITAPanzerfaust.png",
+		buildTime = 520,
 		side = "ITA",
 	},
+	
+	-- ["ita_platoon_at"] =
+	-- {
+		-- members = {
+			-- "itasoloat",
+			-- "itasoloat",
+			-- "itasoloat",
+			-- "itaelitesoloat",
+		-- },
+		-- name = "Anti-Tank Squad",
+		-- description = "3 x Solothurn + 1 x Elitesolothurn  : Anti-Tank Infantry",
+		-- buildCostMetal = 800,
+		-- buildPic = "ITASolothurn.png",
+		-- buildTime = 900,
+		-- side = "ITA",
+	-- },
+	
 	["ita_platoon_infgun"] =
 	{
 		members = {
@@ -163,27 +180,6 @@ local itaDefs = {
 		buildTime = 1900,
 		side = "ITA",
 	},
-  	["ita_platoon_carabinieri"] =
-	{
-		members = {
-			"itacarabinieri",
-			"itacarabinieri",
-			"itacarabinieri",
-			"itacarabinieri",
-			"itacarabinieri",
-			"itacarabinieri",
-			"itacarabinieri",
-			"itacarabinieri",
-			"itacarabinieri",
-			"itacarabinieri",
-		},
-		name = "Black Brigade Anti-Partisan Platoon",
-		description = "10 x Carabinieri: Anti-Partisan Platoon",
-		buildCostMetal = 1500,
-		buildPic = "ITARifle.png",
-		buildTime = 800,
-		side = "ITA",
-	},
 	["ita_platoon_alpini"] =
 	{
 		members = {
@@ -209,7 +205,7 @@ local itaDefs = {
 		buildTime = 4000,
 		side = "ITA",
 	},
-	
+
 	["ita_platoon_mz"] =
 	{
 		members = {
@@ -244,6 +240,7 @@ local itaDefs = {
 			"itabreda30",
 			"itaobserv",
 		},
+        buildCostMetal = 3200,
 		-- other fields not needed for transport squads
 	},
 }

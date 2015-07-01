@@ -1,4 +1,4 @@
-local ITA_MS = BoatMother:New{
+local ITA_MS = ArmedBoat:New{
 	name					= "MS type CRDA 60 t.",
 	description				= "Large Torpedo boat",
 	acceleration			= 0.3,
@@ -13,25 +13,17 @@ local ITA_MS = BoatMother:New{
 	maxVelocity				= 3.2,
 	movementClass			= "BOAT_LightPatrol",
 	objectName				= "ITAMS.s3o",
-	soundCategory			= "ITABoat",
 	transportCapacity		= 2, -- 2 x 1fpu turrets
 	turnRate				= 55,	
 	weapons = {	
 		[1] = {
-			name				= "ita450mmtorpedo",
-			onlyTargetCategory	= "LARGESHIP",
-			maxAngleDif			= 40,
-		},
-		[2] = {
-			name				= "ita450mmtorpedo",
-			onlyTargetCategory	= "LARGESHIP",
-			maxAngleDif			= 40,
+			name				= "BredaM3520mmHE",
+			maxAngleDif			= 270,
+			onlyTargetCategory	= "BUILDING INFANTRY SOFTVEH OPENVEH HARDVEH SHIP LARGESHIP DEPLOYED",
 		},
 	},
 	customparams = {
-		maxammo				= 2,
-		weaponcost			= 40,
-		weaponswithammo		= 2,
+		soundcategory		= "ITA/Boat",
 		children = {
 			"ITA_MS_Turret_20mm_Front", 
 			"ITA_MS_Turret_20mm_Rear", 
@@ -42,7 +34,7 @@ local ITA_MS = BoatMother:New{
 	},
 }
 
-local ITA_MS_Turret_20mm_Front = BoatChild:New{
+local ITA_MS_Turret_20mm_Front = OpenBoatTurret:New{
 	name					= "20mm Turret",
 	description				= "AA Turret",
 	objectName				= "ITAMS_Turret_20mm.s3o",
@@ -59,15 +51,15 @@ local ITA_MS_Turret_20mm_Front = BoatChild:New{
 		},
 	},
 	customparams = {
-	    maxammo					= 16, -- TODO: from BMO 37mm
-		aaweapon				= 1,
-		weaponcost				= 3,
+		maxammo					= 14,
+		weaponcost				= 4,
 		weaponswithammo			= 2,
+
+		aaweapon				= 1,
 		barrelrecoildist		= 4,
 		barrelrecoilspeed		= 20,
 		turretturnspeed			= 45,
 		elevationspeed			= 45,
-		fearlimit				= 25,
     },
 }
 
@@ -76,7 +68,7 @@ local ITA_MS_Turret_20mm_Rear = ITA_MS_Turret_20mm_Front:New{
 		[1] = {
 			mainDir		= [[0 0 -1]],
 		},
-		[1] = {
+		[2] = {
 			mainDir		= [[0 0 -1]],
 		},
 	},

@@ -1,4 +1,4 @@
-local JPN_AbTei = BoatMother:New{
+local JPN_AbTei = ArmedBoat:New{
 	name					= "Armored Boat Ab-Tei",
 	description				= "Armoured river gunboat",
 	acceleration			= 0.05,
@@ -10,11 +10,10 @@ local JPN_AbTei = BoatMother:New{
 	corpse					= "JPNAbTei_dead",
 	mass					= 3000,
 	maxDamage				= 3000,
-	maxReverseVelocity		= 0.6,
-	maxVelocity				= 1.3,
+	maxReverseVelocity		= 0.8,
+	maxVelocity				= 1.8,
 	movementClass			= "BOAT_RiverSmall",
 	objectName				= "JPNAbTei.s3o",
-	soundCategory			= "JPNBoat",
 	transportCapacity		= 3, -- 3 x 1fpu turrets
 	turnRate				= 250,	
 	
@@ -25,6 +24,7 @@ local JPN_AbTei = BoatMother:New{
 		},
 	},
 	customparams = {
+		soundcategory = "JPN/Boat",
 	    armor_front	= 6,
 		armor_rear	= 6,
 		armor_side	= 6,
@@ -40,7 +40,7 @@ local JPN_AbTei = BoatMother:New{
 	},
 }
 
-local JPN_AbTei_Turret_57mm_Front = BoatChild:New{
+local JPN_AbTei_Turret_57mm_Front = EnclosedBoatTurret:New{
 	name					= "Ab-Tei 57mm Turret",
 	description				= "Primary Turret",
 	objectName				= "JPNAbTei_turret_57mm.s3o",
@@ -53,14 +53,14 @@ local JPN_AbTei_Turret_57mm_Front = BoatChild:New{
 		},
 	},
 	customparams = {
-		maxammo					= 11,
+		maxammo					= 10,
 		weaponcost				= 8,
 		weaponswithammo			= 1,
+
 		barrelrecoildist		= 5,
 		barrelrecoilspeed		= 10,
 		turretturnspeed			= 15,
 		elevationspeed			= 20,
-		feartarget				= false, -- fully enclosed
     },
 }
 
@@ -75,7 +75,7 @@ local JPN_AbTei_Turret_57mm_Rear = JPN_AbTei_Turret_57mm_Front:New{
 	},
 }
 
-local JPN_AbTei_Turret_MG = BoatChild:New{
+local JPN_AbTei_Turret_MG = EnclosedBoatTurret:New{
 	name					= "Ab-Tei MG Turret",
 	description				= "Heavy Machinegun Turret",
 	objectName				= "JPNAbTei_turret_MG.s3o",
@@ -94,7 +94,6 @@ local JPN_AbTei_Turret_MG = BoatChild:New{
 		--barrelrecoilspeed		= 10,
 		turretturnspeed			= 20,
 		elevationspeed			= 30,
-		feartarget				= false, -- fully enclosed
 	},
 }
 

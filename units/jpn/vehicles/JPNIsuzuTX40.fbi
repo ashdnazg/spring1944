@@ -13,6 +13,7 @@
   [customParams] {
     buildOutside=1;
     dontCount=1;
+    soundcategory=JPN/Vehicle;
   }
   explodeAs=Vehicle_Explosion_Sm;
   footprintX=3;
@@ -31,7 +32,7 @@
   movementClass=TANK_Truck;
   noChaseCategory=AIR MINE;
   objectName=JPNIsuzuTX40.s3o;
-  releaseHeld=1;
+  releaseHeld=0;
   seismicSignature=0;
   selfDestructAs=Vehicle_Explosion_Sm;
   [sfxtypes] {
@@ -39,7 +40,6 @@
   showNanoFrame=0;
   side=JPN;
   sightDistance=800;
-  soundcategory=JPNVeh;
   stealth=1;
   trackOffset=5;
   trackStrength=6.5;
@@ -52,6 +52,6 @@
   transportUnloadMethod=0;
   turninplace=0;
   turnRate=440;
-  unloadSpread=3;
+  unloadSpread=2;
 }
 

@@ -31,8 +31,7 @@ local GetUnitRulesParam      = Spring.GetUnitRulesParam
 local GetSelectedUnitsSorted = Spring.GetSelectedUnitsSorted
 local GetUnitCommands        = Spring.GetUnitCommands
 local GetUnitAllyTeam        = Spring.GetUnitAllyTeam
-local IsPosInLos			 = Spring.IsPosInLos
-local IsPosInRadar			 = Spring.IsPosInRadar
+local IsPosInAirLos             = Spring.IsPosInAirLos
 local ValidUnitID            = Spring.ValidUnitID
 local WorldToScreenCoords    = Spring.WorldToScreenCoords
 local GetUnitPosition        = Spring.GetUnitPosition
@@ -63,7 +62,7 @@ function widget:DrawScreen()
                     local unitID = unitIDs[i]
                     local allyTeam = GetUnitAllyTeam(unitID)
                     local targetStr
-                    queue = GetUnitCommands(unitID)
+                    queue = GetUnitCommands(unitID, 1)
                     if queue and queue[1] and queue[1].id == CMD_ATTACK then
                         target = queue[1].params
                         -- attack order on the ground, target is filled with
@@ -78,7 +77,7 @@ function widget:DrawScreen()
 
                         if x and y and z then
                             sx, sy, sz = WorldToScreenCoords(x, y, z)
-                            if IsPosInLos(x, y, z, allyTeam) or IsPosInRadar(x, y, z, allyTeam) then
+                            if IsPosInAirLos(x, y, z, allyTeam) then
                                 local zeroed = GetUnitRulesParam(unitID, "zeroed")
                                 if zeroed and zeroed == 1 then
                                     glColor(targettedColor)
